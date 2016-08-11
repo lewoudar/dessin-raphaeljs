@@ -18,7 +18,27 @@ circle1.drag(dragmove, dragstart, dragend);
 circle2.drag(dragmove, dragstart, dragend);
 
 function dragmove(dx, dy, x, y, e) {
-    //on déplace le cercle
+    //==Gestion des collisions==
+    //bord gauche
+    if(this.attr("cx") - radius < 0){
+        this.attr({cx: radius});
+    }
+    //bord droit
+    if(this.attr("cx") + radius > paper_width){
+        var width_max = paper_width - radius;
+        console.log(paper_width - radius);
+        this.attr({cx: width_max});
+    }
+    //bord haut
+    if(this.attr("cy") - radius < 0){
+        this.attr({cy: radius});
+    }
+    //bord bas
+    if(this.attr("cx") + radius > paper_heigth){
+        var heigth_max = paper_width - radius;
+        this.attr({cy: heigth_max});
+    }
+    //==on déplace le cercle==
        this.attr({
         cx: x,
         cy: y
