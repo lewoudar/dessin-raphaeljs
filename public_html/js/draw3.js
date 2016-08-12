@@ -23,6 +23,20 @@ function getPosition(id){
     }
 }
 
+//Gestion des évènements
+function dragstart(x, y, e) {
+    this.attr("stroke", "green");
+}
+
+function dragend(e) {
+    this.attr("stroke", "black");
+}
+
+function dragmove(dx, dy, x, y, e) {
+    
+}
+
+
 var paper_width = 1000;
 var paper_height = 1000;
 var paper = new Raphael(0, 0, paper_width, paper_height);
@@ -33,25 +47,41 @@ var result = {
         links: [55, 56],
         equipement: "sonde-54",
         pop: "pop",
-        dsp: ""
+        dsp: "",
+        mac: "aa:bb:cc:dd:ee:ff",
+        uptime: "2jours,5min",
+        temperature: "50°C",
+        disk_usage: "60%"
     },
     '55': {
         links: [54, 57],
         equipement: "sonde-55",
         pop: "pop",
-        dsp: ""
+        dsp: "",
+        mac: "aa:bb:cc:dd:ee:ff",
+        uptime: "2jours,5min",
+        temperature: "50°C",
+        disk_usage: "60%"
     },
     '56': {
         links: [54],
         equipement: "sonde-56",
         pop: "pop",
-        dsp: ""
+        dsp: "",
+        mac: "aa:bb:cc:dd:ee:ff",
+        uptime: "2jours,5min",
+        temperature: "50°C",
+        disk_usage: "60%"
     },
     '57': {
         links: [55],
         equipement: "sonde-57",
         pop: "pop",
-        dsp: ""
+        dsp: "",
+        mac: "aa:bb:cc:dd:ee:ff",
+        uptime: "2jours,5min",
+        temperature: "50°C",
+        disk_usage: "60%"
     }
 };
 
@@ -66,7 +96,10 @@ for(var id in result){
     var positionX = getRandomArbitrary(100, paper_width - 100);
     var positionY = getRandomArbitrary(100, paper_height - 100);
     //cercle
-    var circle = paper.circle(positionX, positionY, radius).attr({fill: 'yellow'});
+    var circle = paper.circle(positionX, positionY, radius).attr({fill: 'blue'});
+    var infos = "Température: " + result[id].temperature + "\nMise en service: "
+                + result[id].uptime + "\nUtilisation disque: " + result[id].disk_usage;
+    circle.attr({title: infos});
     circle.data("id", id);
     circle.data("links", []);
     //texte
