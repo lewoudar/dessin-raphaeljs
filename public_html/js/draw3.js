@@ -14,6 +14,15 @@ function findLink(id1, id2, links){
     return find;
 }
 
+function getPosition(id){
+    id = "" + id;
+    for(var j = 0; j < probes.length; j++){
+        if(probes[j].data("id") === id){
+            return {x: probes[j].attr("cx"), y: probes[j].attr("cy")};
+        }
+    }
+}
+
 var paper_width = 1000;
 var paper_height = 1000;
 var paper = new Raphael(0, 0, paper_width, paper_height);
@@ -50,7 +59,6 @@ for(var id in result){
 
 //Tableau qui doit contenir les liens dessinés
 var links = [];
-console.log(findLink("54", 55, links));
 //Second parcours pour dessiner les liens
 i = 0;
 //for(var id in result){
