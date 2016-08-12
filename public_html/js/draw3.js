@@ -30,6 +30,7 @@ function getPosition(id){
 }
 
 //Gestion des évènements
+//==DRAG==
 function dragstart(x, y, e) {
     this.attr({
         stroke: "green",
@@ -75,6 +76,19 @@ function dragmove(dx, dy, x, y, e) {
     });
 }
 
+//==HOVER==
+function enterLink(){
+    this.attr({
+        stroke: "blue",
+        "stroke-width": "3px"
+    });
+}
+
+function exitLink(){
+    this.attr({
+        stroke: "black"
+    });
+}
 
 var paper_width = 1000;
 var paper_height = 1000;
@@ -92,6 +106,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
+        state: "on service",
         performances: [0.05, 0.01, 0.00]
     },
     '55': {
@@ -103,6 +118,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
+        state: "on service",
         performances: [0.05, 0.01, 0.00]
     },
     '56': {
@@ -114,6 +130,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
+        state: "on pause",
         performances: [0.05, 0.01, 0.00]
     },
     '57': {
@@ -125,6 +142,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
+        state: "on service",
         performances: [0.05, 0.01, 0.00]
     }
 };
@@ -143,9 +161,17 @@ for(var id in result){
     var circle = paper.circle(positionX, positionY, radius);
     var infos = "Température: " + result[id].temperature + "\nMise en service: "
                 + result[id].uptime + "\nUtilisation disque: " + result[id].disk_usage
-                + "\nAdresse Mac: " + result[id].mac;
+                + "\nAdresse Mac: " + result[id].mac + "\nEtat: " + result[id].state;
+    //On choisit la couleur de la sonde en fonction de certaines de ses informations
+    var fill = ""; //Couleur de la sonde
+    if(result[id].state === "on service"){
+        fill = "blue";
+    }
+    else{
+        fill = "yellow";
+    }
     circle.attr({
-        fill: "blue",
+        fill: fill,
         title: infos
     });
     circle.data({
@@ -201,6 +227,11 @@ for(var id in result){
 }
 
 //On ajoute les évènements aux éléments
+//Pour les sondes
 probes.forEach(function(element){
     element.drag(dragmove, dragstart, dragend);
 });
+//Pour les liens
+for(var key in links){
+    links[key].hover(enterLink, exitLink);
+}
