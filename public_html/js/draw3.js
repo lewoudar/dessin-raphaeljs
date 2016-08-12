@@ -25,15 +25,29 @@ function getPosition(id){
 
 //Gestion des évènements
 function dragstart(x, y, e) {
-    this.attr("stroke", "green");
+    this.attr({
+        stroke: "green",
+        "stroke-width": "3px"
+    });
 }
 
 function dragend(e) {
-    this.attr("stroke", "black");
+    this.attr({
+        stroke: "black",
+        "stroke-width": "1px"
+    });
 }
 
 function dragmove(dx, dy, x, y, e) {
-    
+    this.attr({
+        cx : x,
+        cy: y
+    });
+    var index = this.data("index");
+    texts[index].attr({
+        x: this.attr("cx"),
+        y: this.attr("cy") + radius + text_offset
+    });
 }
 
 
@@ -41,6 +55,7 @@ var paper_width = 1000;
 var paper_height = 1000;
 var paper = new Raphael(0, 0, paper_width, paper_height);
 var radius = 25;
+var text_offset = 15;
 //Objet que l'application devra me retourner
 var result = {
     '54': {
@@ -102,8 +117,9 @@ for(var id in result){
     circle.attr({title: infos});
     circle.data("id", id);
     circle.data("links", []);
+    circle.data("index", i); //Utile pour repérer le texte associé au cercle
     //texte
-    var text = paper.text(positionX, positionY + radius + 15, result[id].equipement + "\n" + result[id].pop);
+    var text = paper.text(positionX, positionY + radius + text_offset, result[id].equipement + "\n" + result[id].pop);
     text.attr({'font-size': '13px'});
     //On ajoute dans les tableaux
     texts.push(text);
@@ -130,3 +146,8 @@ for(var id in result){
     });
     i++;
 }
+
+//On ajoute les évènements aux éléments
+probes.forEach(function(element){
+    element.drag(dragmove, dragstart, dragend);
+});
