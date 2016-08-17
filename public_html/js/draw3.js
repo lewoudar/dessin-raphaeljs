@@ -106,8 +106,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
-        state: "on service",
-        performances: [0.05, 0.01, 0.00]
+        state: "on service"
     },
     '55': {
         links: [54, 57],
@@ -118,8 +117,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
-        state: "on service",
-        performances: [0.05, 0.01, 0.00]
+        state: "on service"
     },
     '56': {
         links: [54],
@@ -130,8 +128,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
-        state: "on pause",
-        performances: [0.05, 0.01, 0.00]
+        state: "on pause"
     },
     '57': {
         links: [55],
@@ -142,8 +139,7 @@ var result = {
         uptime: "2jours,5min",
         temperature: "50°C",
         disk_usage: "60%",
-        state: "on service",
-        performances: [0.05, 0.01, 0.00]
+        state: "on service"
     }
 };
 
@@ -208,14 +204,10 @@ for(var id in result){
             var position = getPosition(element);
             var string_line = "M"+probes[i].attr("cx")+","+probes[i].attr("cy")+"L"+position.x+","+position.y;
             var link = paper.path(string_line);
-            //infobulle du lien
-            var title = "Latence: " + result[id].performances[0] + "ms\nGigue: "
-                        + result[id].performances[1] + "ms\nPerte de paquets: "
-                        + result[id].performances[2] + "%";
             
             link.attr({
                 "stroke-width": "3px",
-                title: title
+                title: ""
             });
             probes[i].data("links").push([element, "start", link]);
             //On enregistre le lien
