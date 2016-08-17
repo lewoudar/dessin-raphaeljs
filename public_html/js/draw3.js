@@ -99,6 +99,7 @@ var text_offset = 15;
 var result = {
     '54': {
         links: [55, 56],
+        id_links: {55:2, 56:1},
         equipement: "sonde-54",
         pop: "pop",
         dsp: "",
@@ -110,6 +111,7 @@ var result = {
     },
     '55': {
         links: [54, 57],
+        id_links: {54:2, 57:3},
         equipement: "sonde-55",
         pop: "pop",
         dsp: "",
@@ -121,6 +123,7 @@ var result = {
     },
     '56': {
         links: [54],
+        id_links: {54:1},
         equipement: "sonde-56",
         pop: "pop",
         dsp: "",
@@ -132,6 +135,7 @@ var result = {
     },
     '57': {
         links: [55],
+        id_links: {55:3},
         equipement: "sonde-57",
         pop: "pop",
         dsp: "",
@@ -204,10 +208,11 @@ for(var id in result){
             var position = getPosition(element);
             var string_line = "M"+probes[i].attr("cx")+","+probes[i].attr("cy")+"L"+position.x+","+position.y;
             var link = paper.path(string_line);
+            var id_link = result[id].id_links[element];
             
             link.attr({
                 "stroke-width": "3px",
-                title: ""
+                title: id_link
             });
             probes[i].data("links").push([element, "start", link]);
             //On enregistre le lien
