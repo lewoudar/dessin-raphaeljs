@@ -93,7 +93,7 @@ function exitLink() {
 //Objet que l'application devra me retourner
 var result = {
     '54': {
-        links: [55, 56],
+        neighbors: [55, 56],
         id_links: {55: 2, 56: 1},
         equipement: "sonde-54",
         pop: "pop",
@@ -105,7 +105,7 @@ var result = {
         state: "on service"
     },
     '55': {
-        links: [54, 57],
+        neighbors: [54, 57],
         id_links: {54: 2, 57: 3},
         equipement: "sonde-55",
         pop: "pop",
@@ -117,7 +117,7 @@ var result = {
         state: "on service"
     },
     '56': {
-        links: [54],
+        neighbors: [54],
         id_links: {54: 1},
         equipement: "sonde-56",
         pop: "pop",
@@ -129,7 +129,7 @@ var result = {
         state: "on pause"
     },
     '57': {
-        links: [55],
+        neighbors: [55],
         id_links: {55: 3},
         equipement: "sonde-57",
         pop: "pop",
@@ -196,7 +196,7 @@ function draw_graph(result) {
 //Second parcours pour dessiner les liens
     i = 0;
     for (var id in result) {
-        result[id].links.forEach(function (element) {
+        result[id].neighbors.forEach(function (element) {
             var link = null;
             //Si le lien a déjà été dessiné, on enregistre le cercle comme
             //étant la fin de la ligne
