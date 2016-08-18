@@ -1,95 +1,3 @@
-//Fonctions utiles
-function getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
-}
-
-function findLink(id1, id2, links) {
-    var find = false;
-    var string_id2 = "" + id2;
-    links.forEach(function (string) {
-        if (string.indexOf(id1) !== -1 && string.indexOf(string_id2) !== -1) {
-            find = true;
-        }
-    });
-    return find;
-}
-
-function getLink(id1, id2, links) {
-    id2 = "" + id2;
-    var key = id2 + "-" + id1;
-    return links[key];
-}
-
-function getPosition(id) {
-    id = "" + id;
-    for (var j = 0; j < probes.length; j++) {
-        if (probes[j].data("id") === id) {
-            return {x: probes[j].attr("cx"), y: probes[j].attr("cy")};
-        }
-    }
-}
-
-//Gestion des évènements
-//==DRAG==
-function dragstart(x, y, e) {
-    this.attr({
-        stroke: "green",
-        "stroke-width": "3px"
-    });
-}
-
-function dragend(e) {
-    this.attr({
-        stroke: "black",
-        "stroke-width": "1px"
-    });
-}
-
-function dragmove(dx, dy, x, y, e) {
-    this.attr({
-        cx: x,
-        cy: y
-    });
-    //Gestion des textes
-    var index = this.data("index");
-    texts[index].attr({
-        x: this.attr("cx"),
-        y: this.attr("cy") + radius + text_offset
-    });
-    //Gestion des liens
-    this.data("links").forEach(function (element) {
-        //console.log(element);
-        var path = element[2].attr("path");
-        //console.log(path);
-        //Si le cercle est impliqué sur le début de la ligne
-        if (element[1] === "start") {
-            //path[0] contient un tableau de ce style [M, x, y]
-            path[0][1] = x;
-            path[0][2] = y;
-        } else {
-            //path[1] contient un tableau de ce style [L, x, y]
-            path[1][1] = x;
-            path[1][2] = y;
-        }
-        element[2].attr({path: path});
-    });
-}
-
-//==HOVER==
-function enterLink() {
-    this.attr({
-        stroke: "blue",
-        "stroke-width": "3px"
-    });
-}
-
-function exitLink() {
-    this.attr({
-        stroke: "black"
-    });
-}
-
-
 //Objet que l'application devra me retourner
 var result = {
     '54': {
@@ -142,22 +50,113 @@ var result = {
     }
 };
 
-var paper_width = 1000;
-var paper_height = 1000;
-var paper = new Raphael(0, 0, paper_width, paper_height);
-var radius = 25;
-var text_offset = 15;
-//Tableau des cercles
-var probes = [];
-//Tableau des noms
-var texts = [];
-//Objet qui va contenir les liens dessinés
-//ex{"54-55":objet link}
-var links = {};
+
 
 function draw_graph(result) {
+    //Fonctions utiles
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
 
-//Premier parcours pour dessiner les cercles
+    function findLink(id1, id2, links) {
+        var find = false;
+        var string_id2 = "" + id2;
+        links.forEach(function (string) {
+            if (string.indexOf(id1) !== -1 && string.indexOf(string_id2) !== -1) {
+                find = true;
+            }
+        });
+        return find;
+    }
+
+    function getLink(id1, id2, links) {
+        id2 = "" + id2;
+        var key = id2 + "-" + id1;
+        return links[key];
+    }
+
+    function getPosition(id) {
+        id = "" + id;
+        for (var j = 0; j < probes.length; j++) {
+            if (probes[j].data("id") === id) {
+                return {x: probes[j].attr("cx"), y: probes[j].attr("cy")};
+            }
+        }
+    }
+
+    //Gestion des évènements
+    //==DRAG==
+    function dragstart(x, y, e) {
+        this.attr({
+            stroke: "green",
+            "stroke-width": "3px"
+        });
+    }
+
+    function dragend(e) {
+        this.attr({
+            stroke: "black",
+            "stroke-width": "1px"
+        });
+    }
+
+    function dragmove(dx, dy, x, y, e) {
+        this.attr({
+            cx: x,
+            cy: y
+        });
+        //Gestion des textes
+        var index = this.data("index");
+        texts[index].attr({
+            x: this.attr("cx"),
+            y: this.attr("cy") + radius + text_offset
+        });
+        //Gestion des liens
+        this.data("links").forEach(function (element) {
+            //console.log(element);
+            var path = element[2].attr("path");
+            //console.log(path);
+            //Si le cercle est impliqué sur le début de la ligne
+            if (element[1] === "start") {
+                //path[0] contient un tableau de ce style [M, x, y]
+                path[0][1] = x;
+                path[0][2] = y;
+            } else {
+                //path[1] contient un tableau de ce style [L, x, y]
+                path[1][1] = x;
+                path[1][2] = y;
+            }
+            element[2].attr({path: path});
+        });
+    }
+
+    //==HOVER==
+    function enterLink() {
+        this.attr({
+            stroke: "blue",
+            "stroke-width": "3px"
+        });
+    }
+
+    function exitLink() {
+        this.attr({
+            stroke: "black"
+        });
+    }
+
+    var paper_width = 1000;
+    var paper_height = 1000;
+    var paper = new Raphael(0, 0, paper_width, paper_height);
+    var radius = 25;
+    var text_offset = 15;
+    //Tableau des cercles
+    var probes = [];
+    //Tableau des noms
+    var texts = [];
+    //Objet qui va contenir les liens dessinés
+    //ex{"54-55":objet link}
+    var links = {};
+    //Premier parcours pour dessiner les cercles
     var i = 0;
     for (var id in result) {
         var positionX = getRandomArbitrary(100, paper_width - 100);
@@ -193,7 +192,7 @@ function draw_graph(result) {
     }
 
 
-//Second parcours pour dessiner les liens
+    //Second parcours pour dessiner les liens
     i = 0;
     for (var id in result) {
         result[id].neighbors.forEach(function (element) {
@@ -225,12 +224,12 @@ function draw_graph(result) {
         i++;
     }
 
-//On ajoute les évènements aux éléments
-//Pour les sondes
+    //On ajoute les évènements aux éléments
+    //Pour les sondes
     probes.forEach(function (element) {
         element.drag(dragmove, dragstart, dragend);
     });
-//Pour les liens
+    //Pour les liens
     for (var key in links) {
         links[key].hover(enterLink, exitLink);
     }
